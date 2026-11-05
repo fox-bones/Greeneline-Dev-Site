@@ -1,5 +1,5 @@
 import express from 'express';
-import { contact, profile } from './data/profile.js';
+import { profile } from './data/profile.js';
 
 function runtimeName() {
   const agent = globalThis.navigator?.userAgent ?? '';
@@ -34,13 +34,6 @@ export function createApp() {
   api.get('/profile', (req, res) => {
     res.set('Cache-Control', 'no-cache');
     res.json(profile);
-  });
-
-  // Requested only when a visitor clicks "Show email", which keeps the address
-  // out of the page source where simple scrapers look.
-  api.get('/contact', (req, res) => {
-    res.set('Cache-Control', 'no-store');
-    res.json(contact);
   });
 
   api.get('/health', (req, res) => {

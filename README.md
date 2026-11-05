@@ -41,8 +41,8 @@ the search-engine tags, and the no-JavaScript fallback all read from it.
 - **Connect a skill to your work:** add the skill's exact name to the `skills` array on a job
   highlight, certification, or project. It then appears in the Skills explorer. `npm test`
   catches names that do not match.
-- **Show a phone number:** set `phone` in the `contact` object. It is blank on purpose.
-- **Change your email or LinkedIn address:** update `contact.email` or `person.linkedin`.
+- **Change your LinkedIn address:** update `person.linkedin`. LinkedIn is the site's only contact
+  route. The site publishes no email address or phone number, and `npm test` fails if one appears.
 
 ## Deploy to Cloudflare
 
@@ -76,7 +76,6 @@ Static files never wake the Worker, which is why they do not count against the r
 | Endpoint           | Purpose                                                                 |
 | ------------------ | ----------------------------------------------------------------------- |
 | `GET /api/profile` | All resume content. Unchanged content returns a small 304 response.     |
-| `GET /api/contact` | The email address, requested only when a visitor clicks "Show email".   |
 | `GET /api/health`  | Status, runtime, and data center, shown in the live panel on the page.  |
 
 ```text

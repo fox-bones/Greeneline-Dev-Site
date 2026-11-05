@@ -6,13 +6,6 @@
  * match a name in the `skills` list below. `npm test` catches typos.
  */
 
-/** Served only by GET /api/contact, after a visitor clicks "Show email". */
-export const contact = {
-  email: 'cayceharwood@gmail.com',
-  // Left blank so the number stays off the public web. Add one to show it on the site.
-  phone: '',
-};
-
 export const profile = {
   // The permanent address. It drives the canonical URL and the social sharing preview.
   // If this ever changes, update the routes in wrangler.jsonc to match.

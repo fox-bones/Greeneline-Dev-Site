@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { createApp } from '../server/app.js';
-import { contact, profile } from '../server/data/profile.js';
+import { profile } from '../server/data/profile.js';
 
 describe('API', () => {
   let server;
@@ -35,18 +35,16 @@ describe('API', () => {
     assert.equal(second.status, 304);
   });
 
-  it('keeps contact details out of the profile payload', async () => {
+  it('publishes no email address or phone number', async () => {
     const text = await (await fetch(`${base}/api/profile`)).text();
-    assert.ok(!text.includes(contact.email), 'email leaked into /api/profile');
-    assert.ok(!/\d{3}-\d{3}-\d{4}/.test(text), 'a phone number leaked into /api/profile');
+    assert.ok(!/[\w.+-]+@[\w-]+\.[a-z]{2,}/i.test(text), 'an email address is in /api/profile');
+    assert.ok(!/\d{3}[-. ]\d{3}[-. ]\d{4}/.test(text), 'a phone number is in /api/profile');
   });
 
-  it('serves contact details without allowing caching', async () => {
+  it('has no contact endpoint', async () => {
     const res = await fetch(`${base}/api/contact`);
-    const body = await res.json();
-    assert.equal(body.email, contact.email);
-    assert.equal(res.headers.get('cache-control'), 'no-store');
-    assert.equal(res.headers.get('x-robots-tag'), 'noindex');
+    assert.equal(res.status, 404);
+    assert.deepEqual(await res.json(), { error: 'not_found' });
   });
 
   it('reports health and reads the edge location from CF-Ray', async () => {
@@ -71,6 +69,7 @@ describe('API', () => {
     await res.arrayBuffer();
     assert.equal(res.headers.get('x-powered-by'), null);
     assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
+    assert.equal(res.headers.get('x-robots-tag'), 'noindex');
   });
 });
 

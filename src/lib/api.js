@@ -8,6 +8,5 @@ export const api = {
   // No custom options here. index.html preloads this exact request, and a
   // mismatched fetch would make the browser download it a second time.
   profile: () => getJson('/api/profile'),
-  contact: () => getJson('/api/contact'),
   health: (signal) => getJson('/api/health', { signal }),
 };
