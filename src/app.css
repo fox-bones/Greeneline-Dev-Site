@@ -1,0 +1,409 @@
+/* ---------- Design tokens ---------- */
+:root {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --wrap: 1180px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --radius: 14px;
+  --radius-sm: 9px;
+  --nav-h: 64px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0a0e13;
+  --surface: #121922;
+  --surface-2: #18212c;
+  --line: #243040;
+  --line-strong: #344356;
+  --text: #e8edf3;
+  --text-2: #b4bfcc;
+  --muted: #8e9bab;
+  --orange: #ff8b3d; /* text and icons */
+  --orange-fill: #ff8b3d; /* buttons, selected chips, and other solid shapes */
+  --orange-soft: rgba(255, 139, 61, 0.12);
+  --orange-glow: rgba(255, 139, 61, 0.16);
+  --on-orange: #1a0e05;
+  --blue: #4aa8ff;
+  --blue-soft: rgba(74, 168, 255, 0.12);
+  --blue-glow: rgba(74, 168, 255, 0.14);
+  --grid: rgba(148, 170, 196, 0.05);
+  --shadow: 0 24px 60px -36px rgba(0, 0, 0, 0.9);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --surface-2: #f4f6f9;
+  --line: #d9e0e8;
+  --line-strong: #b8c3cf;
+  --text: #131a22;
+  --text-2: #3c4855;
+  --muted: #586473;
+  --orange: #b84a08;
+  --orange-fill: #f47a1f;
+  --orange-soft: rgba(184, 74, 8, 0.09);
+  --orange-glow: rgba(232, 112, 36, 0.14);
+  --on-orange: #1a0e05;
+  --blue: #0f62c4;
+  --blue-soft: rgba(15, 98, 196, 0.09);
+  --blue-glow: rgba(15, 98, 196, 0.1);
+  --grid: rgba(49, 74, 104, 0.06);
+  --shadow: 0 24px 50px -38px rgba(30, 50, 80, 0.5);
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + 16px);
+  background: var(--bg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Blueprint grid behind the whole page. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--orange-fill);
+  color: var(--on-orange);
+}
+
+/* ---------- Layout helpers ---------- */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--wrap) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(64px, 10vw, 112px);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--orange-fill);
+  color: var(--on-orange);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ---------- Shared components ---------- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.eyebrow b {
+  font-weight: 500;
+  color: var(--orange);
+}
+
+.card {
+  position: relative;
+  isolation: isolate;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s;
+}
+
+/* Soft glow that follows the pointer. See the spotlight action in lib/motion.js. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), var(--orange-glow), transparent 68%);
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    border-color: var(--line-strong);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15.5px;
+  font-weight: 550;
+  text-decoration: none;
+  transition: transform 0.18s var(--ease), border-color 0.18s, background 0.18s, color 0.18s;
+}
+
+.btn:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn--primary {
+  border-color: transparent;
+  background: var(--orange-fill);
+  color: var(--on-orange);
+}
+
+.btn--primary:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--orange-fill) 88%, var(--text));
+}
+
+/* ---------- Motion ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s var(--ease) var(--reveal-delay, 0ms),
+    transform 0.6s var(--ease) var(--reveal-delay, 0ms),
+    border-color 0.2s;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* The theme toggle draws its own circular wipe. See toggleTheme in lib/site.svelte.js. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Fallback resume for visitors without JavaScript ---------- */
+.noscript-resume {
+  max-width: 720px;
+  margin-inline: auto;
+  padding: 48px 16px;
+}
+
+.noscript-resume h1 {
+  font-size: 44px;
+  letter-spacing: -0.03em;
+}
+
+.noscript-resume h2 {
+  margin-top: 36px;
+  font-size: 26px;
+  color: var(--orange);
+}
+
+.noscript-resume h3 {
+  margin-top: 22px;
+  font-size: 19px;
+}
+
+.noscript-resume p {
+  margin-top: 8px;
+}
+
+.noscript-resume ul {
+  margin-top: 8px;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.noscript-resume li {
+  margin-top: 5px;
+}
+
+.noscript-resume a {
+  color: var(--orange);
+}
+
+/* ---------- Print: a clean, ink-friendly resume ---------- */
+@media print {
+  :root,
+  :root[data-theme='dark'],
+  :root[data-theme='light'] {
+    color-scheme: light;
+    --bg: #fff;
+    --surface: #fff;
+    --surface-2: #fff;
+    --line: #ccc;
+    --line-strong: #999;
+    --text: #000;
+    --text-2: #222;
+    --muted: #444;
+    --orange: #000;
+    --orange-fill: #000;
+    --blue: #000;
+    --orange-soft: transparent;
+    --shadow: none;
+  }
+
+  body {
+    font-size: 11pt;
+  }
+
+  body::before,
+  .no-print {
+    display: none !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .section {
+    padding-block: 18pt;
+  }
+
+  .card {
+    break-inside: avoid;
+  }
+}
+
+@media (forced-colors: active) {
+  .chip[aria-pressed='true'] {
+    outline: 2px solid Highlight;
+  }
+}

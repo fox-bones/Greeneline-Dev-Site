@@ -1,0 +1,31 @@
+{
+  "name": "cayce-greene-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Professional website for Cayce Greene. Svelte frontend, Express API, hosted on Cloudflare Workers.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "npm run build && vite preview",
+    "test": "node --test \"tests/*.test.js\"",
+    "check:deploy": "npm run build && wrangler deploy --dry-run",
+    "deploy": "npm run test && npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@lucide/svelte": "^1.69.0",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.67.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "svelte": "^5.57.3",
+    "vite": "^8.3.6",
+    "wrangler": "^4.158.0"
+  }
+}
